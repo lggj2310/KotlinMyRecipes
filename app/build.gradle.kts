@@ -79,8 +79,9 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-rxjava2")
     implementation("io.coil-kt:coil-compose:2.5.0") // Para cargar imágenes
 
-    implementation("androidx.room:room-runtime:2.5.2")
-    kapt("androidx.room:room-compiler:2.5.2")
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation(libs.androidx.core.ktx)
