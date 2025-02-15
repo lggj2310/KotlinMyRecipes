@@ -9,9 +9,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun LoginScreen(onLoginSuccess: () -> Unit) {
+fun LoginScreen(viewModel: LoginViewModel, onLoginSuccess: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var pass by remember { mutableStateOf("") }
+    val isLoggedIn by viewModel.isLoggedIn.collectAsState()
+
+    LaunchedEffect(isLoggedIn) {
+        if (isLoggedIn) onLoginSuccess()
+    }
 
     Column(modifier = Modifier.padding(25.dp)) {
         TextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
@@ -20,9 +25,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Button(onClick =  {
-            if (email == "info@koalit.dev" && pass == "koalit123") {
-                onLoginSuccess()
-            }
+            viewModel.login(email, pass)
         }) {
             Text("Log In")
         }

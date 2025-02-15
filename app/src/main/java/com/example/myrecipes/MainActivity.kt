@@ -11,13 +11,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myrecipes.ui.theme.MyRecipesTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LoginScreen {}
+            val loginViewModel: LoginViewModel = viewModel()
+            LoginScreen(viewModel = loginViewModel) {}
         }
     }
 }
