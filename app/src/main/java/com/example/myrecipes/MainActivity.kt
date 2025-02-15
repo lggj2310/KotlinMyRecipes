@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,11 +32,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavigation(navController: NavHostController) {
     val recipeViewModel: RecipeViewModel = viewModel()
-    val recipes = listOf(
-        Recipe(1,"Pasta Carbonara", "", 20, false),
-        Recipe(2,"Ensalada César", "",15, true),
-        Recipe(3,"Sopa de Tomate", "", 30, false)
-    )
+
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
@@ -43,15 +40,40 @@ fun AppNavigation(navController: NavHostController) {
         }
 
         composable("recipes") {
-            RecipeListScreen(navController, recipes)
+            RecipeListScreen(navController, recipeViewModel)
         }
 
-//        composable("recipeDetail/{recipeId}") { backStackEntry ->
-//            val recipeId = backStackEntry.arguments?.getString("recipeId")?.toIntOrNull()
-//            recipeId?.let {
-//                RecipeDetailScreen(recipeId = it, viewModel = recipeViewModel)
-//            }
-//        }
+        composable("addRecipe") {
+            RecipeAddScreen(navController, onSave = { newRecipe ->
+                recipeViewModel.insert(newRecipe)
+            })
+        }
+
+        composable("recipeDetail/{recipeId}") { backStackEntry ->
+            val recipeId = backStackEntry.arguments?.getString("recipeId")?.toIntOrNull()
+            recipeId?.let { id ->
+                val recipe = recipeViewModel.recipes.collectAsState(initial = emptyList()).value.find { it.id == id }
+                recipe?.let {
+                    RecipeDetailScreen(navController, it, onEdit = {
+                        navController.navigate("editRecipe/$id")
+                    }, onDelete = {
+                        recipeViewModel.delete(it)
+                    })
+                }
+            }
+        }
+
+        composable("editRecipe/{recipeId}") { backStackEntry ->
+            val recipeId = backStackEntry.arguments?.getString("recipeId")?.toIntOrNull()
+            recipeId?.let { id ->
+                val recipe = recipeViewModel.recipes.collectAsState(initial = emptyList()).value.find { it.id == id }
+                recipe?.let {
+                    RecipeEditScreen(navController, it, onSave = { updatedRecipe ->
+                        recipeViewModel.update(updatedRecipe)
+                    })
+                }
+            }
+        }
     }
 }
 

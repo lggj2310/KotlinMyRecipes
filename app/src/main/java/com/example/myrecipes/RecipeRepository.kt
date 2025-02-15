@@ -10,6 +10,10 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
         recipeDao.insertRecipe(recipe)
     }
 
+    suspend fun update(recipe: Recipe) {
+        recipeDao.updateRecipe(recipe)
+    }
+
     suspend fun delete(recipe: Recipe) {
         recipeDao.deleteRecipe(recipe)
     }
