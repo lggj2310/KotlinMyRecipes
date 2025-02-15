@@ -1,6 +1,7 @@
 package com.example.myrecipes
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +27,8 @@ class LoginViewModel(app: Application) : AndroidViewModel(app) {
             viewModelScope.launch {
                 sessionManager.saveSession(true)
             }
+        } else {
+            Toast.makeText(null, "Incorrect Credentials", Toast.LENGTH_SHORT).show()
         }
     }
 

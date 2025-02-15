@@ -14,10 +14,10 @@ interface RecipeDao {
     @Query("SELECT * FROM recipes ORDER BY title ASC")
     fun getRecipes(): kotlinx.coroutines.flow.Flow<List<Recipe>>
 
-    @Query("SELECT * FROM recipes WHERE isFavorite = 1")
+    @Query("SELECT * FROM recipes WHERE isFav = 1")
     fun getFavoriteRecipes(): kotlinx.coroutines.flow.Flow<List<Recipe>>
 
-    @Query("SELECT * FROM recipes ORDER BY preparationTime ASC")
+    @Query("SELECT * FROM recipes ORDER BY prepTime ASC")
     fun getRecipesByTime(): kotlinx.coroutines.flow.Flow<List<Recipe>>
 
     @Delete
