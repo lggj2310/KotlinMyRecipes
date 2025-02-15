@@ -4,10 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,6 +15,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
+import com.example.myrecipes.auth.AuthViewModel
+import com.example.myrecipes.auth.ui.LoginScreen
+import com.example.myrecipes.recipes.ui.RecipeAddScreen
+import com.example.myrecipes.recipes.ui.RecipeDetailScreen
+import com.example.myrecipes.recipes.ui.RecipeEditScreen
+import com.example.myrecipes.recipes.ui.RecipeListScreen
+import com.example.myrecipes.recipes.RecipeViewModel
 import com.example.myrecipes.ui.theme.MyRecipesTheme
 import com.google.firebase.auth.FirebaseAuth
 

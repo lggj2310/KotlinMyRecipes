@@ -1,4 +1,4 @@
-package com.example.myrecipes
+package com.example.myrecipes.recipes.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.myrecipes.recipes.data.Recipe
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

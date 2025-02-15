@@ -1,4 +1,4 @@
-package com.example.myrecipes
+package com.example.myrecipes.auth
 
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth

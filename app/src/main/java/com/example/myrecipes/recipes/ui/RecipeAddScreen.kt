@@ -1,4 +1,4 @@
-package com.example.myrecipes
+package com.example.myrecipes.recipes.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.myrecipes.recipes.data.Recipe
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

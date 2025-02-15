@@ -1,8 +1,11 @@
-package com.example.myrecipes
+package com.example.myrecipes.recipes
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myrecipes.recipes.data.Recipe
+import com.example.myrecipes.recipes.data.RecipeDatabase
+import com.example.myrecipes.recipes.data.RecipeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
