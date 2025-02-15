@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-kapt")
 }
 
 android {
@@ -42,6 +43,9 @@ android {
 dependencies {
 
     val composeBom = platform("androidx.compose:compose-bom:2025.01.01")
+    implementation(libs.androidx.navigation.runtime.android)
+    implementation("androidx.navigation:navigation-compose:2.7.2")
+
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
@@ -74,6 +78,11 @@ dependencies {
     // Optional - Integration with RxJava
     implementation("androidx.compose.runtime:runtime-rxjava2")
     implementation("io.coil-kt:coil-compose:2.5.0") // Para cargar imágenes
+
+    implementation("androidx.room:room-runtime:2.5.2")
+    kapt("androidx.room:room-compiler:2.5.2")
+
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
