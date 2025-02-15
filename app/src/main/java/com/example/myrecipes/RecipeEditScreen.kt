@@ -1,6 +1,9 @@
 package com.example.myrecipes
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,18 +18,50 @@ fun RecipeEditScreen(navController: NavController, recipe: Recipe, onSave: (Reci
     var desc by remember { mutableStateOf(recipe.desc) }
     var time by remember { mutableStateOf(recipe.prepTime.toString()) }
     var isFavorite by remember { mutableStateOf(recipe.isFav) }
+    var isTitleValid by remember { mutableStateOf(true) }
+    var isTimeValid by remember { mutableStateOf(true) }
+
+    fun validateInputs(): Boolean {
+        isTitleValid = title.isNotEmpty()
+        isTimeValid = time.toIntOrNull() != null && time.toInt() > 0
+        return isTitleValid && isTimeValid
+    }
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Edit Recipe") })
+            TopAppBar(
+                title = { Text("Edit Recipe") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                }
+            )
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues).padding(16.dp)) {
-            OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text("Title") })
+            OutlinedTextField(
+                value = title,
+                onValueChange = { title = it },
+                label = { Text("Title") },
+                isError = !isTitleValid
+            )
+            if (!isTitleValid) Text("Title cannot be empty", color = MaterialTheme.colorScheme.error)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = desc, onValueChange = { desc = it }, label = { Text("Description") })
+            OutlinedTextField(
+                value = desc,
+                onValueChange = { desc = it },
+                label = { Text("Description") }
+            )
+
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = time, onValueChange = { time = it }, label = { Text("Preparation Time") })
+            OutlinedTextField(
+                value = time,
+                onValueChange = { time = it },
+                label = { Text("Preparation Time") },
+                isError = !isTimeValid
+            )
+            if (!isTimeValid) Text("It must be more than 0", color = MaterialTheme.colorScheme.error)
             Spacer(modifier = Modifier.height(8.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(checked = isFavorite, onCheckedChange = { isFavorite = it })
@@ -34,8 +69,17 @@ fun RecipeEditScreen(navController: NavController, recipe: Recipe, onSave: (Reci
             }
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = {
-                onSave(recipe.copy(title = title, desc = desc, prepTime = time.toIntOrNull() ?: 0, isFav = isFavorite))
-                navController.popBackStack()
+                if (validateInputs()) {
+                    onSave(
+                        recipe.copy(
+                            title = title,
+                            desc = desc,
+                            prepTime = time.toIntOrNull() ?: 0,
+                            isFav = isFavorite
+                        )
+                    )
+                    navController.popBackStack()
+                }
             }) {
                 Text("Save")
             }

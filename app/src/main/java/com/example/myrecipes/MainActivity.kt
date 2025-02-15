@@ -1,5 +1,6 @@
 package com.example.myrecipes
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,29 +20,39 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import com.example.myrecipes.ui.theme.MyRecipesTheme
+import com.google.firebase.auth.FirebaseAuth
 
+fun isUserLoggedIn(): Boolean {
+    val user = FirebaseAuth.getInstance().currentUser
+    return user != null
+}
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
+
             AppNavigation(navController)
         }
     }
 }
 
+
+@SuppressLint("ViewModelConstructorInComposable")
 @Composable
 fun AppNavigation(navController: NavHostController) {
     val recipeViewModel: RecipeViewModel = viewModel()
+    val authViewModel = AuthViewModel()
 
+    CheckUserSession(navController, authViewModel)
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
-            LoginScreen(navController)
+            LoginScreen(navController, authViewModel)
         }
 
         composable("recipes") {
-            RecipeListScreen(navController, recipeViewModel)
+            RecipeListScreen(navController, recipeViewModel, authViewModel)
         }
 
         composable("addRecipe") {
@@ -72,6 +84,23 @@ fun AppNavigation(navController: NavHostController) {
                         recipeViewModel.update(updatedRecipe)
                     })
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun CheckUserSession(navController: NavHostController, authViewModel: AuthViewModel) {
+    val isLoggedIn = authViewModel.isUserLoggedIn()
+
+    LaunchedEffect(isLoggedIn) {
+        if (isLoggedIn) {
+            navController.navigate("recipes") {
+                popUpTo("login") { inclusive = true } // Evita volver a login
+            }
+        } else {
+            navController.navigate("login") {
+                popUpTo("login") { inclusive = true }
             }
         }
     }
