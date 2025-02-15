@@ -19,6 +19,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val loginViewModel: LoginViewModel = viewModel()
+
             LoginScreen(viewModel = loginViewModel) {}
         }
     }
